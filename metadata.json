@@ -1,0 +1,6 @@
+{
+  "name": "Doctor Directory",
+  "description": "Doctor Directory app featuring specialty search, top-rated specialists, and appointment booking",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

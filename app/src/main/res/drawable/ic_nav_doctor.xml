@@ -1,0 +1,23 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Head -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M12,2a4,4 0 1,0 0,8 4,4 0 0,0 0,-8z" />
+    <!-- Shoulders with Stethoscope -->
+    <path
+        android:fillColor="#94A3B8"
+        android:pathData="M6,17c0,-2.67 5.33,-4 6,-4s6,1.33 6,4v2H6v-2z" />
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.2"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000"
+        android:pathData="M9,13.5v2a3,3 0 0,0 6,0v-2" />
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M15,13.5m-1,0a1,1 0 1,0 2,0a1,1 0 1,0 -2,0" />
+</vector>

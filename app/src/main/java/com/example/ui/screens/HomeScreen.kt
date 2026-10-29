@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.R
+import com.example.ui.components.OnlineFirebaseVideoPlayer
 
 /**
  * Doctor Directory Home Screen
@@ -127,43 +128,25 @@ fun HomeScreen(
                         .testTag("BTN-TOP-HEART")
                 )
 
-                // 2. Hero: "+ Book Appointment" Button Touch Area
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth(0.24f)
-                        .fillMaxHeight(0.035f)
-                        .align(Alignment.TopStart)
-                        .offset(
-                            x = imageWidth * 0.10f,
-                            y = imageHeight * 0.312f
-                        )
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) {
-                            activeDoctorName = "Specialist Consultant"
-                            showBookingDialog = true
-                        }
-                        .testTag("BTN-HERO-BOOK")
-                )
+                // =========================================================================
+                // 🎬 ONLINE FIREBASE VIDEO PLAYER (নীল বক্সের স্থানে অনলাইন ভিডিও প্লেয়ার)
+                // =========================================================================
+                val videoPlayerWidthFraction = 0.891f   // নীল বক্সের সমান প্রস্থ (Width)
+                val videoPlayerHeightFraction = 0.1425f // নীল বক্সের সমান উচ্চতা (Height)
+                val videoPlayerOffsetX = 0.0545f        // বাম থেকে দূরত্ব (X Offset)
+                val videoPlayerOffsetY = 0.175f         // উপর থেকে দূরত্ব (Y Offset)
+                val videoPlayerBorderColor = Color(0xFF2563EB) // নীল রঙের বর্ডার (Blue Border)
 
-                // 3. Hero: "✨ Ask AI Consultant" Button Touch Area
-                Box(
+                OnlineFirebaseVideoPlayer(
                     modifier = Modifier
-                        .fillMaxWidth(0.24f)
-                        .fillMaxHeight(0.035f)
+                        .fillMaxWidth(videoPlayerWidthFraction)
+                        .fillMaxHeight(videoPlayerHeightFraction)
                         .align(Alignment.TopStart)
                         .offset(
-                            x = imageWidth * 0.355f,
-                            y = imageHeight * 0.312f
-                        )
-                        .clickable(
-                            interactionSource = remember { MutableInteractionSource() },
-                            indication = null
-                        ) {
-                            showAiDialog = true
-                        }
-                        .testTag("BTN-HERO-AI")
+                            x = imageWidth * videoPlayerOffsetX,
+                            y = imageHeight * videoPlayerOffsetY
+                        ),
+                    borderColor = videoPlayerBorderColor
                 )
 
                 // 4. Nine Specialty Card Touch Areas

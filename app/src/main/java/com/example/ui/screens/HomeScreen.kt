@@ -11,6 +11,7 @@ import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -38,6 +39,7 @@ fun HomeScreen(
     var showBookingDialog by remember { mutableStateOf(false) }
     var showAiDialog by remember { mutableStateOf(false) }
     var showSearchDialog by remember { mutableStateOf(false) }
+    var showTopDoctorsDialog by remember { mutableStateOf(false) }
     var activeSpecialtyFeedback by remember { mutableStateOf<String?>(null) }
     var activeDoctorName by remember { mutableStateOf("Dr. Emily Chen") }
 
@@ -194,6 +196,46 @@ fun HomeScreen(
                             )
                         }
                     }
+                }
+
+                // =========================================================================
+                // 🟢 NEXT BUTTON SIZE & POSITION / বাটনের সাইজ ও পজিশন (এখান থেকে এডিট করতে পারবেন)
+                // =========================================================================
+                val nextButtonWidth = 78.dp              // বাটনের প্রস্থ (Width)
+                val nextButtonHeight = 28.dp             // বাটনের উচ্চতা (Height)
+                val nextButtonFontSize = 13.sp           // অক্ষরের ফন্ট সাইজ (Font Size)
+                val nextButtonCornerRadius = 14.dp       // কোণার রাউন্ডনেস (Corner Radius)
+                val nextButtonColor = Color(0xFF16A34A)  // গ্রীন কালার (Button Color)
+                val nextButtonOffsetX = 0.745f           // ডানে-বামে অবস্থান (X Offset)
+                val nextButtonOffsetY = 0.772f           // উপরে-নিচে অবস্থান (Y Offset)
+                // =========================================================================
+
+                // 4b. "Next" Green Button (Replacing 'See all' beside Top Rated Doctors)
+                Button(
+                    onClick = { showTopDoctorsDialog = true },
+                    modifier = Modifier
+                        .width(nextButtonWidth)
+                        .height(nextButtonHeight)
+                        .align(Alignment.TopStart)
+                        .offset(
+                            x = imageWidth * nextButtonOffsetX,
+                            y = imageHeight * nextButtonOffsetY
+                        )
+                        .testTag("BTN-NEXT-TOP-DOCTORS"),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = nextButtonColor,
+                        contentColor = Color.White
+                    ),
+                    shape = RoundedCornerShape(nextButtonCornerRadius),
+                    contentPadding = PaddingValues(0.dp),
+                    elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
+                ) {
+                    Text(
+                        text = "Next",
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = nextButtonFontSize
+                    )
                 }
 
                 // 5. Dr. Emily Chen "Book Now" Button Touch Area
@@ -442,6 +484,112 @@ fun HomeScreen(
             dismissButton = {
                 TextButton(onClick = { showSearchDialog = false }) {
                     Text("Close", color = Color(0xFF64748B))
+                }
+            }
+        )
+    }
+
+    // Top Rated Doctors ("Next") Dialog
+    if (showTopDoctorsDialog) {
+        val topDoctorsList = remember {
+            listOf(
+                Triple("Prof. Dr. M. A. Rahman", "Cardiologist • 22 yrs exp", "4.9 ★ (184 reviews)"),
+                Triple("Dr. Nusrat Jahan", "Pediatric Specialist • 14 yrs exp", "4.8 ★ (210 reviews)"),
+                Triple("Prof. Dr. Tariqul Islam", "Neurologist • 18 yrs exp", "4.9 ★ (142 reviews)"),
+                Triple("Dr. Farhana Ahmed", "Gynecologist • 15 yrs exp", "4.7 ★ (98 reviews)"),
+                Triple("Dr. Shamsul Huda", "Orthopedic Surgeon • 16 yrs exp", "4.8 ★ (115 reviews)")
+            )
+        }
+        AlertDialog(
+            onDismissRequest = { showTopDoctorsDialog = false },
+            title = {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Icon(
+                        imageVector = Icons.Default.Star,
+                        contentDescription = null,
+                        tint = Color(0xFF16A34A)
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(
+                        text = "Top Rated Specialists",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFF0F172A)
+                    )
+                }
+            },
+            text = {
+                Column(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = "Next available certified specialists ready for consultation:",
+                        fontSize = 12.sp,
+                        color = Color(0xFF64748B)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
+                    topDoctorsList.forEach { (name, spec, rating) ->
+                        Surface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(vertical = 4.dp)
+                                .clickable {
+                                    activeDoctorName = name
+                                    showTopDoctorsDialog = false
+                                    showBookingDialog = true
+                                },
+                            color = Color(0xFFF0FDF4),
+                            shape = RoundedCornerShape(8.dp),
+                            border = androidx.compose.foundation.BorderStroke(1.dp, Color(0xFFDCFCE7))
+                        ) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(10.dp),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = name,
+                                        fontSize = 13.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = Color(0xFF0F172A)
+                                    )
+                                    Text(
+                                        text = spec,
+                                        fontSize = 11.sp,
+                                        color = Color(0xFF475569)
+                                    )
+                                    Text(
+                                        text = rating,
+                                        fontSize = 11.sp,
+                                        fontWeight = FontWeight.SemiBold,
+                                        color = Color(0xFF16A34A)
+                                    )
+                                }
+                                Button(
+                                    onClick = {
+                                        activeDoctorName = name
+                                        showTopDoctorsDialog = false
+                                        showBookingDialog = true
+                                    },
+                                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF16A34A)),
+                                    contentPadding = PaddingValues(horizontal = 12.dp, vertical = 4.dp),
+                                    shape = RoundedCornerShape(6.dp)
+                                ) {
+                                    Text("Book", fontSize = 11.sp)
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                Button(
+                    onClick = { showTopDoctorsDialog = false },
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF16A34A)),
+                    shape = RoundedCornerShape(8.dp)
+                ) {
+                    Text("Close")
                 }
             }
         )

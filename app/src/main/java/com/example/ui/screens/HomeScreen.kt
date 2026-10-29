@@ -123,7 +123,7 @@ fun HomeScreen(
                             interactionSource = remember { MutableInteractionSource() },
                             indication = null
                         ) {
-                            activeSpecialtyFeedback = "Cardiologist (42 Doctors Available)"
+                            activeSpecialtyFeedback = "Cardiologist"
                         }
                         .testTag("BTN-TOP-HEART")
                 )

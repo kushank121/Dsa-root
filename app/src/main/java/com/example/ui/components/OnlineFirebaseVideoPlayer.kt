@@ -41,7 +41,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Composable
 fun OnlineFirebaseVideoPlayer(
     modifier: Modifier = Modifier,
-    videoUrl: String = "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    videoUrl: String = "https://raw.githubusercontent.com/cseitz/sample-files/main/assets/video/mp4/bbb_short.mp4",
     borderColor: Color = Color(0xFF2563EB),
     onVideoClick: () -> Unit = {}
 ) {
@@ -52,6 +52,17 @@ fun OnlineFirebaseVideoPlayer(
     var mediaPlayerRef by remember { mutableStateOf<MediaPlayer?>(null) }
     var videoViewRef by remember { mutableStateOf<VideoView?>(null) }
     var showControls by remember { mutableStateOf(true) }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            try {
+                videoViewRef?.stopPlayback()
+                mediaPlayerRef?.release()
+            } catch (_: Exception) {}
+            mediaPlayerRef = null
+            videoViewRef = null
+        }
+    }
 
     val cornerRadius = 20.dp
 
@@ -75,19 +86,28 @@ fun OnlineFirebaseVideoPlayer(
                         FrameLayout.LayoutParams.MATCH_PARENT,
                         FrameLayout.LayoutParams.MATCH_PARENT
                     )
-                    setVideoURI(Uri.parse(videoUrl))
+                    try {
+                        setVideoURI(Uri.parse(videoUrl))
+                    } catch (_: Exception) {
+                        isLoading = false
+                        hasError = true
+                    }
                     setOnPreparedListener { mp ->
                         mediaPlayerRef = mp
                         mp.isLooping = true
-                        if (isMuted) {
-                            mp.setVolume(0f, 0f)
-                        } else {
-                            mp.setVolume(1f, 1f)
-                        }
+                        try {
+                            if (isMuted) {
+                                mp.setVolume(0f, 0f)
+                            } else {
+                                mp.setVolume(1f, 1f)
+                            }
+                        } catch (_: Exception) {}
                         isLoading = false
                         hasError = false
                         if (isPlaying) {
-                            start()
+                            try {
+                                start()
+                            } catch (_: Exception) {}
                         }
                     }
                     setOnErrorListener { _, _, _ ->
@@ -99,22 +119,24 @@ fun OnlineFirebaseVideoPlayer(
                 }
             },
             update = { view ->
-                if (isPlaying) {
-                    if (!view.isPlaying && !isLoading && !hasError) {
-                        view.start()
-                    }
-                } else {
-                    if (view.isPlaying) {
-                        view.pause()
-                    }
-                }
-                mediaPlayerRef?.let { mp ->
-                    if (isMuted) {
-                        mp.setVolume(0f, 0f)
+                try {
+                    if (isPlaying) {
+                        if (!view.isPlaying && !isLoading && !hasError) {
+                            view.start()
+                        }
                     } else {
-                        mp.setVolume(1f, 1f)
+                        if (view.isPlaying) {
+                            view.pause()
+                        }
                     }
-                }
+                    mediaPlayerRef?.let { mp ->
+                        if (isMuted) {
+                            mp.setVolume(0f, 0f)
+                        } else {
+                            mp.setVolume(1f, 1f)
+                        }
+                    }
+                } catch (_: Exception) {}
             },
             modifier = Modifier.fillMaxSize()
         )

@@ -7,6 +7,7 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AutoAwesome
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Close
@@ -201,16 +202,16 @@ fun HomeScreen(
                 // =========================================================================
                 // 🟢 NEXT BUTTON SIZE & POSITION / বাটনের সাইজ ও পজিশন (এখান থেকে এডিট করতে পারবেন)
                 // =========================================================================
-                val nextButtonWidth = 78.dp              // বাটনের প্রস্থ (Width)
-                val nextButtonHeight = 28.dp             // বাটনের উচ্চতা (Height)
-                val nextButtonFontSize = 13.sp           // অক্ষরের ফন্ট সাইজ (Font Size)
+                val nextButtonWidth = imageWidth * 0.264f // এন্ডোকলজিস্ট কার্ডের হুবহু সমান প্রস্থ (Width)
+                val nextButtonHeight = 34.dp             // বাটনের উচ্চতা (Height)
+                val nextButtonFontSize = 17.sp           // অক্ষরের ফন্ট সাইজ (Font Size - আরও বড় ও স্পষ্ট)
                 val nextButtonCornerRadius = 14.dp       // কোণার রাউন্ডনেস (Corner Radius)
                 val nextButtonColor = Color(0xFF16A34A)  // গ্রীন কালার (Button Color)
-                val nextButtonOffsetX = 0.745f           // ডানে-বামে অবস্থান (X Offset)
-                val nextButtonOffsetY = 0.772f           // উপরে-নিচে অবস্থান (Y Offset)
+                val nextButtonOffsetX = 0.662f           // এন্ডোকলজিস্ট কার্ডের সমান বাম প্রান্ত (X Offset)
+                val nextButtonOffsetY = 0.758f           // কার্ড দুটোর ঠিক মাঝখানে অবস্থান (Y Offset)
                 // =========================================================================
 
-                // 4b. "Next" Green Button (Replacing 'See all' beside Top Rated Doctors)
+                // 4b. "Next" Green Button with Arrow (Replacing 'See all' beside Top Rated Doctors)
                 Button(
                     onClick = { showTopDoctorsDialog = true },
                     modifier = Modifier
@@ -230,12 +231,26 @@ fun HomeScreen(
                     contentPadding = PaddingValues(0.dp),
                     elevation = ButtonDefaults.buttonElevation(defaultElevation = 2.dp)
                 ) {
-                    Text(
-                        text = "Next",
-                        color = Color.White,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = nextButtonFontSize
-                    )
+                    Row(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Center
+                    ) {
+                        Text(
+                            text = "Next",
+                            color = Color.White,
+                            fontWeight = FontWeight.Black,
+                            fontSize = nextButtonFontSize,
+                            letterSpacing = 0.5.sp
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowForward,
+                            contentDescription = "Next",
+                            tint = Color.White,
+                            modifier = Modifier.size(22.dp)
+                        )
+                    }
                 }
 
                 // 5. Dr. Emily Chen "Book Now" Button Touch Area
